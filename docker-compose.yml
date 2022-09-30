@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass test
+    volumes: 
+      - cache:/data
+  result_db:
+    image: mongodb:5
+    ports:
+      - 27017:27017
+    volumes:
+      - result_db:/result_db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+volumes:
+  cache:
+    driver: local
+  result_db:
+    driver: local
